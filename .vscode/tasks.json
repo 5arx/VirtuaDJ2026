@@ -34,8 +34,8 @@
       "problemMatcher": {
         "owner": "vite",
         "pattern": {
-          "regexp": "^(.*)$",
-          "message": 1
+          "regexp": "^(?!)$",
+          "message": 0
         },
         "background": {
           "activeOnStart": true,
@@ -57,8 +57,8 @@
       "problemMatcher": {
         "owner": "vite",
         "pattern": {
-          "regexp": "^(.*)$",
-          "message": 1
+          "regexp": "^(?!)$",
+          "message": 0
         },
         "background": {
           "activeOnStart": true,
