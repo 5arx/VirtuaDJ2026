@@ -1,0 +1,113 @@
+#VRML V2.0 utf8
+
+Background {
+    backUrl "clouds4.jpg"
+    leftUrl "clouds4.jpg"
+    rightUrl "clouds4.jpg"
+    frontUrl "clouds4.jpg"
+    topUrl "clouds4.jpg"
+    bottomUrl "clouds4.jpg"
+}
+
+
+NavigationInfo {
+    speed 100
+}
+
+Viewpoint {
+    description "Front Elev"
+     position    500 -308.4 100.398
+}
+
+Viewpoint {
+    description "Elev2"
+      position -10.9314 331.353 -500
+      orientation 0.998515 -0.0494375 -0.022872  3.70756
+}
+
+
+
+DEF armT 
+Transform {
+    translation 20 0 0
+        children [
+        
+            DEF arm1
+            Shape {
+                geometry 
+                IndexedFaceSet {
+                    coord Coordinate {
+                        point [ 0  0   0,  
+                                80 0   0, 
+                                80 143 0,
+                                0  143 0, 
+                                3  39  335.7,   
+                                77 39  335.7, 
+                                77 104 335.7 ,
+                                3  104 335.7        
+                            ]
+                    }
+                                                                           
+                    coordIndex [1, 0, 3, 2, -1 
+                                0, 4, 7, 3, -1 
+                                7, 6, 2, 3, -1 
+                                6, 5, 1, 2, -1 
+                                5, 4, 0, 1, -1 
+                                4, 5, 6, 7, -1 
+                           ]
+                    }
+                    appearance Appearance {
+                        material Material {
+                            diffuseColor 0 .2 .7
+                        }
+                    }
+                }
+
+
+                DEF Pin 
+                Transform {
+                    rotation 0 0 1 1.57
+                    translation 0 71.5 148
+                    
+                    children [
+    
+                        DEF pin1 
+                        Shape {
+                            geometry Cylinder {
+                                radius 10
+                                height 200
+                            }
+                            appearance Appearance {
+                                material Material {
+                                    diffuseColor 1 .9 .9
+                                }
+                            }
+                        }
+                    
+                    ]   
+                }
+
+            ]
+        }
+
+
+DEF FINDME ProximitySensor {
+  center 0 0 0
+  size 1000 1000 1000
+}
+
+DEF Printer Script {
+  eventIn SFVec3f set_position
+  eventIn SFRotation set_orientation
+  url "javascript:
+  function set_position(value, time) {
+    print(value);
+  }
+  function set_orientation(value, time) {
+    print(value);
+  }"
+}
+
+ROUTE FINDME.position_changed TO Printer.set_position
+ROUTE FINDME.orientation_changed TO Printer.set_orientation
+     

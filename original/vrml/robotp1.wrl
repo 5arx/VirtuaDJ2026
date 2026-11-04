@@ -1,0 +1,255 @@
+#VRML V2.0 utf8
+
+Background {
+    backUrl "clouds4.jpg"
+    leftUrl "clouds4.jpg"
+    rightUrl "clouds4.jpg"
+    frontUrl "clouds4.jpg"
+    topUrl "clouds4.jpg"
+    bottomUrl "clouds4.jpg"
+}
+
+
+NavigationInfo {
+    speed 100
+    type "EXAMINE"
+}
+
+
+Viewpoint {
+    description "Front Elev"
+     position    0 0 600
+}
+
+
+DEF Robot Transform {
+    children [
+    
+
+        DEF ui Billboard {
+            children [
+            
+            
+                DEF Upbut1
+                Transform {
+                    translation -200 240 0
+                    children [
+
+                        Group {
+                            children [
+
+                               DEF but1 
+                               Shape {
+                                    appearance DEF blue Appearance {
+                                        material Material {
+                                            diffuseColor 0 .2 .7
+                                        }
+                                    }
+                                    geometry DEF button Cone {
+                                        bottomRadius 25
+                                        height 30
+                                    }
+                                }
+                        
+                                DEF UpBut1Sensor 
+                                TouchSensor {
+                                    enabled TRUE
+                                }
+                            ]
+                         }
+                     ]
+                 }
+                
+                DEF Downbut1
+                Transform {
+                    translation -200 190 0
+                    rotation 0 0 -1 3.14
+                    children [
+                        
+                        Group {
+                            children [
+                                
+                                DEF DownBut1Sensor
+                                TouchSensor {
+                                    enabled TRUE
+                                }
+
+                                USE but1 
+                            ]
+                        }
+                    ]
+                }
+
+                DEF Upbut2
+                Transform {
+                    translation -150 240 0
+                    children [
+
+                        Group {
+                            children [
+                            
+                                Shape {
+                                    geometry USE button
+                                    appearance DEF red Appearance {
+                                        material Material {
+                                            diffuseColor 1 0 0
+                                        }
+                                    }
+                                }
+                            
+                                DEF Upbut2Sensor 
+                                TouchSensor {
+                                    enabled TRUE 
+                                }
+                            ]
+                        }
+                            
+                    ]
+                }#end Upbut2
+
+                DEF DownBut2
+                Transform {
+                    translation -150 180 0
+                    rotation 0 0 -1 3.14
+                    children [
+
+                        Group {
+                            children [
+                            
+                                Shape {
+                                    geometry USE button
+                                    appearance USE red
+                                }
+
+                                DEF DownBut2Sensor
+                                TouchSensor {
+                                    enabled TRUE
+                                }
+                            
+                            ]
+                        }
+                    
+                    
+                    
+                    ]
+                }
+
+            ]
+        }#end ui
+    
+
+
+
+    DEF Base 
+    Transform {
+        children [
+
+            #the base
+            DEF base Shape {
+                geometry Box {
+                    size 400 200 400
+                }
+                appearance Appearance {
+                    material Material {
+                        diffuseColor .5 .5 .5
+                    }
+                }
+            }
+            
+            #vertical anchor rod
+            DEF Anchor 
+            Transform {
+                translation 0 210 0
+                children [
+
+                    DEF anchor&sensor 
+                    Group {
+                        children [
+
+                            #the anchor rod
+                            DEF anchor Shape {
+                                appearance Appearance {
+                                    material Material {
+                                        diffuseColor 1 0 0
+                                    }
+                                }
+                                geometry Cylinder {
+                                    radius 32.5
+                                    height 200
+                                }
+                            }
+                    
+                            DEF anchorSensor
+                            CylinderSensor {
+                            }
+
+                        ]
+                    }
+                    
+                    #arm nearest the body
+                    DEF Arm1 
+                    Transform {
+                        center 0 0 0
+                        translation 15 5 -142
+                        center 40 71 150
+                        children [
+                                     
+                            DEF arm1 
+                            Inline {
+                                url "armp1.wrl"
+                            }
+                                     
+
+                            #arm with the claw
+                            DEF Arm2 
+                            Transform {
+                                translation 110 15 163
+                                 center 40 57.5 100
+                                children [
+                                    
+                                    DEF arm2 
+                                    Inline {
+                                        url "armp2.wrl"
+                                    }
+                                    #the gripper
+                                    DEF Claw Transform {
+
+                                    }
+                                
+                                ]
+                            }#end Arm2
+                                          
+                        ]
+                    }#end Arm1
+                              
+                ]
+          }#end Anchor
+            
+        ]
+    }#end Base                            
+
+    ]
+}#end Robot
+
+DEF ControlUnit Script {
+    eventIn SFTime UpBut1touchTime
+    eventIn SFTime DownBut1touchTime
+    eventIn SFTime UpBut2touchTime
+    eventIn SFTime DownBut2touchTime 
+    eventOut SFRotation arm1Rot
+    field SFFloat angle1 0
+    field SFFloat angle2 0
+    field SFNode ARM1 USE Arm1
+    field SFNode ARM2 USE Arm2
+
+    url ["ControlUnit.js"]
+}
+
+ROUTE anchorSensor.rotation_changed TO Anchor.rotation
+
+#ui components
+ROUTE UpBut1Sensor.touchTime TO ControlUnit.UpBut1touchTime
+ROUTE DownBut1Sensor.touchTime TO ControlUnit.DownBut1touchTime
+
+ROUTE Upbut2Sensor.touchTime TO ControlUnit.UpBut2touchTime
+ROUTE DownBut2Sensor.touchTime TO ControlUnit.DownBut2touchTime
