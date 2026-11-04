@@ -1,0 +1,59 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>report</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRA~1\MICROS~1\Office\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080" BACKGROUND="Image15.jpg">
+
+<B><U><FONT FACE="Arial" SIZE=7><P>Report</P>
+</B></FONT><FONT FACE="Arial" SIZE=4><P>Introduction:</P>
+</U><P>The aim of the project was to build a working three-dimensional model of a record deck. The deck is largely based on the Technics SL1210 MkIII turntable although I have changed colours and textures and simplified part of the tonearm assembly.</P>
+<U><P>Specification:</P>
+<P>Functionality:</P>
+
+<UL><DIR>
+<DIR>
+
+
+<UL>
+</U><LI>To implement all the controls found on the original turntable. </LI>
+<LI>To be able to play a .wav file by using the virtual deck. </LI>
+<LI>To be able to alter the pitch/speed of the .wav file. </LI>
+<LI>To be able to stop and start the sound file using the controls.</LI></UL>
+</DIR>
+</DIR>
+</UL>
+
+<P>The initial design plan was for a 3D user guide but this was expanded upon more and more as my proficiency with VRML grew. At a fairly late stage in the project I became aware that web-browsers were able to play up to three sound files concurrently. This led to the implementation of the Virtua DJ concept.</P>
+<U><P>Design and Implementation</P>
+</U><P>The record deck itself is a complete virtual 'world'. As far as possible I have attempted to follow an object-orientated design methodology in order to keep to the real-world metaphor. </P>
+<P>To minimise the size of the actual file, most of the geometry has been saved in separate .wrl files and 'Inlined' into the main file. Only one prototype was implemented and this was for the 'tooltips' functionality of the model.</P>
+<P>As the functionality of the machine is fairly straightforward, all the scripts are written in external javascript files to reduce the size of the main file. These are referenced from the script nodes in the main file. There are some very small scripts which are used as simple state machines and a large script (Powerbox.js) which simulates electricity and handles the soundclip-related processes.</FONT><FONT FACE="Arial" SIZE=2> </P>
+</FONT><FONT FACE="Arial" SIZE=4><P>The design was subject to a number of late changes and a shortage of time. Consequently I was not able to leave the deck as a PROTO as per the original design as I had insufficient time to rework the existing file into PROTO form.</P>
+<U><P>Methodology</P>
+</U><P>The project was built as an incremental prototype:</P>
+<P>At the outset I contacted Technics UK and requested a parts list to help me with the task of creating the geometry. They refused to supply me with one, so I began hand-measuring the various components and building rough models of each sub-system using the basic primitive shapes supported by VRML 2.0. </P>
+<P>I then broke the deck down into transformation heirarchies and these shapes were roughly arranged into the required geometry of the deck using the scene graph I created.</P>
+<P>The next stage was the building of the 'mechanical' systems (tonearm raise/lower, pop up lights etc.) using javascript.</P>
+<P>Following this, I incrementally built the 'electrical' sub-systems.</P>
+<P>Fairly late into the project I managed to get limited access to 3D StudioMax software which I used to create the more complex geometry; namely the platter, heightring and parts of the headshell assembly.</P>
+<P>Once this was complete the new shapes were more carefully arranged and the main control script was designed and implemented. The light and sound functions were built into one script which accesses the two transform nodes which contain the tonearm and the lever used to raise and lower it. One transform is used for vertical rotation and another for horizontal. The powerbox script is thus able to detect when the arm is up or down or over the record and toggles the sound accordingly.</P>
+<P>The pitch slider and the 33/45 rpm buttons are routed to the powerbox script and are used to alter the speed the clip is played.</P>
+<U><P>Testing and Appraisal:</P>
+</U><P>Testing of the project was carried out by myself backed up by informal appraisal by my peers over three stages. The first stage involved checking the basic logic of the system and making the functionality concrete.</P>
+<P>The second stage tested the electrical systems and geometry configuration.</P>
+<P>The final stage involved testing the sound-related functions, pitch changes etc. and tidying up the aesthetics of the project.</P>
+<P>Given the relative simplicity of the project, it is not surprising that very little modifications needed to be made to the code.</P>
+<U><P>Results:</P>
+</U><P>The design is sound and seems to work fairly well. I have kept to the real thing as closely as possible and am reasonably pleased with the performance. Had I had more time I would have liked to build the deck and all the components as a PROTO. I could then instantiate them as many times as required in a less memory-intensive way than at present. This <I>is </I>only a problem within the Virtua DJ world in which I have merely inlined two deck files and altered the url of the .wav file used by the AudioClip nodes in each inlined deck file. This was due to the fact that sound was a late addition. Had I created a deck PROTO it would have been possible to instantiate it several times giving a different string to the field connected to that parameter and I will be making the necessary changes to the next version of this project.</P>
+<P>I think the sound functionality works fairly well - by trial and error I found that using a wav of more than around ten seconds playing time causes problems: the soundclip does not always play from the beginning and the browser jumps from location to location within the sound file. As a consequence I have created my own looped sounds from existing recordings using SoundForge 4.0 and this creates the illusion of a continuous piece of music fairly well. </P>
+<P>Had more time been available to me I would have liked to implement a soundmixer to allow the user to mix sounds from one deck to another. This would require that the deck files be PROTOs to facilitate routing from deck to deck and deck to mixer and would be a fairly trivial task.</P>
+<U><P>Conclusions:</P>
+</U><P>I am fairly pleased with the outcome of the project. A number of cosmetic changes will certainly be required and some of the geometry could be improved upon. In addition, I would be interested in finding out about specialised sound processing techniques as the current VRML standard does not support anything beyond altering pitch and volume. I have seen a number of sound processing classes written in Java and it may be possible to adapt or build on one of these to add the extra functionality to VR worlds.</P>
+<U><P>Further Development:</P>
+</U><P>I will be implementing a soundmixer with volume control and also a pair of speakers to reinforce the feeling of spatialised sound which is currently not implemented. Due to shortage of time I was unable to code the system so that placing the needle on different parts of the record would play different music. This was included in the design and would require little work. I think it would also be nice to place the system within some kind of room and do some more work on the geometry to the rear of the tonearm as at present it is very schematic.</P>
+<P>Indra Sarkar</P>
+<P>May 2000</P></FONT></BODY>
+</HTML>

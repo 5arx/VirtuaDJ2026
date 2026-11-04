@@ -1,0 +1,23 @@
+#VRML V2.0 utf8
+
+#this is the SpeedSlider
+#Author: Indra Sarkar (msc46ixs)
+
+        
+        
+        DEF Slider Shape {
+                appearance DEF Chromy Appearance {
+                    material Material {
+                        diffuseColor 0.8 0.8 0.8
+                        shininess .8
+                        specularColor .95 .95 1
+                    }
+                }  
+            
+                geometry Extrusion { 
+                    crossSection [0 0,  2 1, 4 2.75, 6.5 10,  13.5 10,  16, 2.75  20 0]
+                    solid TRUE
+                    spine [0 0 0,  -20 0 0]
+                    }
+                }
+        

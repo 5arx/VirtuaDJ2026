@@ -1,0 +1,1439 @@
+#VRML V2.0 utf8
+
+
+#This is a complete Turntable
+#Author Indra Sarkar (msc46ixs) 
+#April 2000
+
+
+
+
+Background {
+    backUrl "clouds4.jpg"
+    leftUrl "clouds4.jpg"
+    rightUrl "clouds4.jpg"
+    frontUrl "clouds4.jpg"
+    bottomUrl "clouds4.jpg"
+    topUrl "clouds4.jpg"
+}
+
+
+
+
+
+#######   ToolTip PROTO DECLARATION   #########
+PROTO tooltipobject [ field MFString string []]
+{
+    Transform {
+        translation -100 100 -150
+        children [
+
+            Billboard {
+                axisOfRotation 0 0 0
+                children [
+
+                    Shape {
+                        appearance Appearance {
+                            material Material {
+                                diffuseColor 1 1 0
+                            }
+                        }
+                        geometry Text {
+                            fontStyle FontStyle {
+                                size 50
+                                style "BOLD"                              
+                            }
+                            string IS string
+                        }
+                    }          
+                
+                ]
+            }   
+
+        ]
+    }
+}
+
+
+
+#touchsensors routed to script
+#which generates tooltips
+
+    DEF ToolTip 
+    Script {
+        eventIn SFTime enabTime
+        field SFBool enabled TRUE
+        eventIn SFBool isOver
+        eventIn SFBool ts2isOver  
+        eventIn SFBool powerisOver
+        eventIn SFBool StartisOver
+        eventIn SFBool popLiteisOver
+        eventIn SFBool popswitchisOver
+        eventIn SFBool tonearmisOver      
+        eventIn SFVec3f headshellisOver
+        eventIn SFBool leverisOver
+        eventIn SFVec3f sliderisOver      
+        eventIn SFBool platterisOver      
+        eventIn SFBool lite33isOver
+        eventIn SFBool lite45isOver
+        eventIn SFBool redLiteisOver
+        eventIn SFBool toolisOver
+
+        eventOut SFInt32 display
+   
+        url "tooltips.js"                
+    }
+                                   
+     #this generates tooltip
+     #objects in response to touchsensor
+     #isOver/isActive events.
+            DEF switch1 Switch {
+                whichChoice -1
+                choice [
+        
+             #0
+                    tooltipobject {
+                            string ""
+                    }
+                    
+
+                    
+              #1   
+                            tooltipobject {
+                            string "Power On/Off"
+                            }
+                                       
+                    
+               #2                            
+                            tooltipobject {
+                                string "Start-Stop Turntable"
+                            }
+               #3
+                            tooltipobject {
+                                string "Pop Up Light"
+                            }  
+
+               #4   
+                            tooltipobject {
+                                string "Light Switch"
+                            }
+
+               #5
+                            tooltipobject {
+                                string "Tonearm"
+                            }
+
+               #6
+                            tooltipobject {
+                                string "Headshell and Cartridge"
+                            }
+
+               #7   
+                            tooltipobject {
+                                string "Arm Lever"
+                            }
+
+               #8
+                            tooltipobject {
+                                string "Speed Adjuster"
+                            }
+                                
+               #9
+                            tooltipobject {
+                                string "Platter"
+                            }
+
+               #10
+                            tooltipobject {
+                                string "331/3 rpm Speedbutton"
+                            }
+
+               #11
+                            tooltipobject {
+                                string "45 rpm Speedbutton"
+                            }
+
+               #12   
+                            tooltipobject {
+                                string "Strobe Lamp"
+                            }  
+                            
+               #13
+                            tooltipobject {
+                                string "Show/Hide Tooltips"
+                            }
+                        ]
+            }
+           
+
+
+                           
+
+
+##### Navigation Information ##########
+
+NavigationInfo{
+   type "EXAMINE"
+   headlight FALSE
+   speed 25
+}
+###########################################    
+
+
+
+
+
+    ########### World Title ###############
+
+Transform {
+    translation 150 100 -200
+    children [
+        Billboard {
+            axisOfRotation 0 0 0
+            children 
+                Shape { 
+                    appearance Appearance {
+                        material Material {
+                            diffuseColor 0 0 0
+                        }
+                    }
+                    geometry Text {
+                        fontStyle FontStyle {
+                            size 15
+                            style "BOLD"
+                            justify "CENTER"
+                        }
+                    string ["SEM334" , 
+                            "Virtual Reality Project",
+                            "Indra Sarkar (msc46ixs)", 
+                            "May 2000"]
+                    }
+                }
+        }
+    ]
+}
+    ############  ToolTip Switch  ###############
+
+    DEF toolTipswitch Transform {
+        translation -190 100 -200
+        children [
+            
+            Transform {
+                translation 0  30 0
+                children
+            Billboard {
+                axisOfRotation 0 0 0
+                children Shape {
+                    appearance Appearance {
+                        material Material {
+                            diffuseColor 1 0 0
+                        }
+                    }
+                    geometry Text {
+                        fontStyle FontStyle {
+                            size 140
+                            style "BOLD"
+
+                        }
+                        string "?"
+                    }
+                    
+                }
+            }
+        }
+            DEF toolsensor TouchSensor {
+                enabled TRUE
+            }
+        ] 
+    }
+
+
+    ############ Viewpoints ##############
+
+Viewpoint { position 0 297.5 461.7
+            orientation -1 0 0 .6 
+            description "Deck 1"
+        }
+                                  
+
+##########################################
+
+
+
+############ Lights ##################
+
+DirectionalLight  {  direction 0 -1 0 }
+
+DirectionalLight  {  direction -1 0 0    }
+
+###########################################
+                                            
+
+
+    ############ Deck Geometry ############
+
+DEF Deck 
+Group {
+    children [
+
+
+#Main Body of deck.
+
+        DEF Body Inline { 
+            url ["Body.wrl"]
+        }
+
+#Arm Rest
+
+    DEF ArmRest
+    Transform {
+        translation 162 32 -38
+        children [
+            DEF restTS TouchSensor {
+            }
+         
+            Shape {
+                appearance Appearance {
+                    material Material {
+                        diffuseColor 0 0 0
+                    }
+                }
+                geometry Cylinder {
+                    radius 8
+                    height 25
+                }
+            }
+        ]
+}
+    
+    
+        
+#SpecLabel
+
+       DEF SpecLabel 
+       Transform {
+            translation -130 -27 150
+            rotation 1 0 0 1.57
+            children 
+                DEF Label
+                Inline {
+                    url ["SpecLab.wrl"]
+                }
+        }
+
+### SliderScale ###
+#this is the label which is marked with the
+#pitch shifts from one to plus eight.
+    
+#Height Ring
+                             
+#platter and rotation sensor        
+        DEF PlatterAndSensors 
+        Group {   
+            children [
+        
+				#red light
+        DEF RedLightSource 
+        Transform {
+            translation -200 50 110
+            children [
+                
+            
+		
+                DEF RedLight
+                SpotLight {                      
+                    color 1 0 0
+                    direction 0 -1 -1
+                    beamWidth .78
+					radius 50    
+                    on TRUE
+                }
+            ]
+        }
+
+                DEF TIMER 
+                TimeSensor {
+                    cycleInterval 1
+                    loop TRUE
+                }
+
+                #when platter is dragged.
+                DEF PlatterSensor
+                CylinderSensor {
+                    diskAngle .39 
+                }   
+  
+#Generates rotation info for platter group 
+                DEF PlatterOrInt 
+                OrientationInterpolator {
+                    key      [0,   0.1,  0.2, 
+                              0.3, 0.4,  0.5,
+                              0.6, 0.7,  0.8,
+                              0.9,
+                              1
+                             ]
+
+                    keyValue [0 -1 0 0,  0 -1 0 0.47088,
+                              
+                              0 -1 0 0.94176,  0 -1 0 1.412640,
+
+                              0 -1 0 1.88352,   0 -1 0 2.3544,
+                             
+                              0 -1 0 2.8252,    0 -1 0 3.29616,
+
+                              0 -1 0 3.76704,    0 -1 0 4.23792,
+
+                              0 -1 0 4.7088 ]
+                }
+
+                        
+                DEF Plat&SlipMat
+                Transform {
+                    translation -47.5 18 0    #reset y to 27
+                    children [
+                       
+                        DEF platterv3
+                        Inline {
+                            url ["Platter.wrl"] 
+                        }              
+                           
+                        Transform {
+                            translation 0 20 0
+                            children [
+                        
+                                Viewpoint {
+                                    description "On the Platter!"
+                                    position   -61.717 59 6.47944
+                                    orientation  0 1 0  3.55293
+                                  }
+
+                                DEF slips
+                                Inline {
+                                    url ["Slipmat.wrl"]
+                                }
+                            ]
+                        }
+                    ]
+
+                }
+            ]   
+        }
+
+   
+#StartStop Switch and Label
+        DEF StartStopSwitch  
+        Group {
+            children [
+            
+                DEF StartStopSensor
+                TouchSensor {      enabled FALSE
+                }
+
+                DEF StartStopButton
+                Transform {
+                    translation  -195 27 146
+                    children [
+                        
+                        
+                        DEF startstopsw 
+                        Inline {
+                            url ["StrtStop.wrl"]
+                        }
+                    ]         
+                }
+                
+            ]
+        }                  
+                                       
+
+#Tonearm
+        DEF Tonearm 
+        Transform {
+            translation 160 50 -165    
+            children [
+                
+                DEF mySound Sound  {
+	                source DEF myaudio AudioClip {
+		                url	"dnbsamp.wav"
+		                startTime -1
+                        stopTime 0
+		                loop TRUE
+                        pitch 1
+	                }
+	                minBack	6000
+	                maxBack	6000
+	                minFront 6000
+	                maxFront 6000
+	                spatialize FALSE
+                }
+
+
+        DEF HeightRing Transform {
+            translation 0 -30 65
+            children
+            Inline {
+                url "htring.wrl"
+            }
+        }
+
+
+DEF HeightVert Transform {
+    translation 0 -10 65
+    children Shape {
+        appearance Appearance {
+            material Material {
+                diffuseColor 0 0 1
+            }
+        }
+        geometry Cylinder {
+            height 65
+            radius 4
+        }
+    }
+}            
+
+            
+DEF ToneArmVertical Transform  {
+    center -2 0 60
+    children [
+
+        DEF ToneArm 
+        Transform {
+            center 2 0 60
+            children [
+
+                DEF sensor&handle 
+                Group {
+                    children [
+                        DEF ArmSensorHorizontal 
+                        CylinderSensor {
+                            minAngle -.9
+                            maxAngle 0
+                        }
+                
+#Headshell
+                        
+
+                        DEF Headshell Transform {
+                            translation 0 6 275.5
+                            rotation 0 -1 0 0.26
+                            children [
+                            
+                              
+                            
+                                        DEF Headshellf
+                                            Inline {
+                                                 url ["hdshell.wrl"]
+                                            }
+                                        ]
+                        }
+
+                    ]
+                }
+
+                Group {
+                    children [
+                        
+                        DEF armstipsens TouchSensor {}
+
+                        Inline {
+                        url ["arm.wrl"]
+                        }
+                ]
+                }
+                
+
+#ToneArm weight to rear
+
+                DEF ToneArmWeight 
+                Transform {
+                    translation 0 0 35
+                    children 
+    
+                        DEF armweight 
+                        Inline  {
+                            url ["TArmWt.wrl"]
+                        }
+                }
+
+#Threaded headshell attachment.
+     DEF Armscrew
+     Transform {         
+        translation 7.5 0 250   
+        rotation 0 -1 0 .27
+        children 
+            
+            DEF armscrewf
+            Inline  {
+                url ["armscrew.wrl"]
+            }
+     }
+
+
+    ]
+    }
+
+]
+}
+
+DEF SensorT 
+Transform {
+    translation 20 0 80
+    rotation -1 0 0 .78
+    center 0 -15 0
+    children [
+    
+        DEF lever&sensor 
+        Group {
+            children [
+            
+
+                Inline {
+                    url "lever.wrl"
+                }
+
+        
+		        DEF LeverSensor 
+                TouchSensor {
+                }
+
+
+                DEF LeverTimeS 
+                TimeSensor {
+                    cycleInterval 1
+                    loop FALSE
+                    stopTime -1 
+                }
+
+                DEF DownLeverTS TimeSensor {
+                    cycleInterval 1
+                    loop FALSE
+                    stopTime -1
+                }
+
+                DEF ArmDownOrieInt 
+                OrientationInterpolator {
+                    key [0, 1]
+                    keyValue [-1 0 0 .1, -1 0 0 -.025]
+                }
+                
+
+                DEF ArmUpOrieInt 
+                OrientationInterpolator {
+                    key [0,             1]
+                    keyValue [-1 0 0 0,     -1 0 0  .1 ]
+                }
+
+                DEF LeverDownOriInt 
+                OrientationInterpolator {
+                    key  [0, 1]
+                    keyValue [-1 0 0 0.78, -1 0 0 -0.6]
+                                        
+                }
+
+                DEF LeverUpOriInt 
+                OrientationInterpolator {
+                    key [0,  1]
+                    keyValue [-1 0 0 -0.6, -1 0 0 0.78]
+                }
+                
+       
+                                             
+            ]
+        }                                     
+    ]
+}       
+            ]
+        }
+
+#the speed button lights        
+    DEF smallLights 
+    Group {
+        children [
+
+
+
+
+#33 light
+
+    DEF thirtythreeLight 
+    Group {
+        children [                        
+            DEF Light33 
+            Transform {
+                translation -160 27 156 #x = 48  y =  z = 37
+                rotation -1 0 0 1.57
+                children [
+                
+                    DEF TouSen33 
+                    TouchSensor {
+                        enabled FALSE
+                    }
+
+                    DEF surround 
+                    Shape {
+                        appearance Appearance {
+                            material Material {
+                                diffuseColor 0 0 1
+                            }
+                        }
+                        geometry Box  {
+                            size 23 8 1
+                        }
+                    }
+
+
+                    DEF text&inner 
+                    Transform {
+                        translation 0 0 .7
+                        children [
+                        
+                            Transform {
+                                translation -8 -1.3 .6
+                                children [
+                
+                                    Inline {
+                                        url ["text33.wrl"]
+                                    }
+
+                                
+
+                                        Transform {
+                                            translation 14 1.3 -.5
+                                            children [
+            
+                                                DEF inner Shape {
+                                                    appearance Appearance {
+                                                        material DEF lite33 Material {
+                                                            diffuseColor 0 0 0
+                                                        }
+                                                    }
+                                                    geometry Box {
+                                                        size 6 3 1
+                                                    }
+                                                }
+        
+                                            ]
+                                         }       
+                                    ]
+                               }
+
+                               DEF light33 
+                               Shape {
+                                    appearance Appearance {
+                                        material Material {
+                                            diffuseColor 1 1 1
+                                        }
+                                    }
+                                    geometry Box {
+                                        size 21 6 1
+                                    }
+                                }
+         
+                            ]
+                        }
+	               
+                    ]
+                }        
+        ]
+    }
+
+
+
+
+
+DEF fortyFiveLight 
+Group {
+    children [
+                                       
+        DEF Light45 Transform {
+            translation -135 27 156
+            rotation -1 0 0 1.57
+            children [
+
+                DEF TouSen45 TouchSensor {
+                    enabled FALSE
+                }
+
+                USE surround
+
+                DEF inner45 Transform {
+                    translation 0 0 .7
+                    children [
+
+
+                        Transform {
+                            translation -8 -1.3 .6
+    
+                            children [
+        
+                                Inline {
+                                    url ["text45.wrl"]
+                                }
+
+                                
+
+                                Transform {
+                                    translation 14 1.3 -.5
+                                    children [
+    
+                                        Shape {
+                                            appearance Appearance {
+                                                material DEF lite45 Material {
+                                                    diffuseColor 0 0 0
+                                                }
+                                            }
+                                            geometry Box {
+                                                size 6 3 1
+                                            }
+                                        }
+    
+                                    ]
+                                }       
+                            ]
+                        }
+
+                        DEF light45 
+                        Shape {
+                            appearance Appearance {
+                                material  Material {
+                                    diffuseColor 1 1 1
+                                }
+                            }
+                            geometry Box {
+                                size 21 6 1
+                            }
+                        }
+                                     
+                    ]
+                }
+
+                          
+            ]
+        }        
+]
+}
+
+
+]
+}
+
+                                  
+    DEF PowerSwitch 
+        Transform {
+            translation -200 33 110
+            children [
+
+                DEF Power 
+                Group{
+                    children [
+    
+                        DEF OnOff 
+                        Shape {
+                            appearance DEF Chromy Appearance {
+                                material Material {
+                                    diffuseColor 0.9 0.9 0.9
+                                    shininess .8
+                                    specularColor .95 .95 1
+                                    }
+                                }           
+        
+                            geometry Cylinder {
+                                radius 14
+                                height 13
+                                }
+                        }
+   
+    
+    
+                        DEF Top 
+                        Transform {
+                            translation 0 8 0
+                            children 
+                            [
+                                DEF OnOffLabel 
+                                Shape {
+                                    appearance Appearance {
+                                        material Material {
+                                            diffuseColor 0 .01 .01
+                                            }
+                                        }
+                                    geometry Cylinder {
+                                        radius 14
+                                        height 3
+                                        }
+                                    }
+
+                        DEF powerLabel
+                        Transform {
+                            translation -10 1.7 2
+                            rotation -1 0 0 1.57
+                            children
+                            DEF textLabel 
+                            Shape {
+                                appearance Appearance {
+                                    material Material {
+                                        diffuseColor 1 1 1
+                                    }
+                                }
+                                geometry Text {
+                                    fontStyle FontStyle {
+                                        size 6
+                                        style "BOLD"
+                                    }
+                                    string "On - Off"
+                                }
+                            }
+                        }
+
+                    DEF Topsensor 
+                    TouchSensor {
+                    }
+           
+                ]
+            }                  
+     
+        DEF timerboxclock TimeSensor {
+            cycleInterval .2
+            loop FALSE   
+        }
+
+        DEF timerboxanti TimeSensor {
+            cycleInterval .2
+            loop FALSE
+        }
+
+        DEF clockwise 
+        OrientationInterpolator {
+            key [0, 1]
+            keyValue [0 1 0 0, 0 1 0 .4]
+        }
+
+        DEF anticlock 
+        OrientationInterpolator {
+            key [0, 1]
+            keyValue [0  1 0 .4, 0  1 0 0]
+        }
+
+ 
+        #handles rotation of the
+        #powerswitch when activated
+        DEF topscript Script {
+            field SFBool clockwise TRUE
+            eventIn SFTime touchTime
+            eventOut SFTime clockOut
+            eventOut SFTime anticlockOut
+
+            url "tpscript.js"
+        }
+                                                                   
+
+
+
+                    DEF RedlightPanel 
+                    Transform {
+                        translation 3 0  -4
+                        children [
+
+                            DEF redlitsens TouchSensor {
+
+                            }
+
+                            DEF PanelRED 
+                            Shape {
+                                appearance Appearance  {
+                                    material DEF redpanel Material {
+                                        diffuseColor 1 1 1 
+                                    }
+                                }
+                                geometry Cylinder  {
+                                    height 7
+                                    radius 10
+                                }
+                            }
+
+                        ]
+                    }
+  
+                            
+                ]
+            }
+        ]
+    }        
+      
+
+#Popuplight
+        DEF PopLightT 
+        Transform {
+            translation 0 26 165
+            children [ 
+ 
+				Group {
+                    children [
+        
+                    DEF PopLight 
+                    Transform {
+                        translation 0 -4 0
+                        children [
+                
+                            DEF LightSensor 
+                            TouchSensor {
+                                enabled FALSE 
+                            }
+
+                            Shape {
+                                appearance USE Chromy  
+                                geometry Cylinder {
+                                    radius 5
+                                    height 28
+                                }
+                            }
+    
+                DEF Panel Transform {
+                translation 0 8  -2.1
+                children [ 
+            
+                    Shape {
+                
+                        appearance Appearance {
+                            material Material {
+                                emissiveColor 1 1 1
+                                diffuseColor 1 0 0
+                            }
+                        }
+                        geometry Cylinder {
+                            bottom FALSE
+                            top FALSE
+                            radius 3
+                            height 7
+                
+                        }
+                    }
+                 ]
+                }
+
+            ]
+        }
+        
+
+        DEF switchANDsensor Group {
+            children [
+                DEF SwitchSensor TouchSensor { 
+                enabled TRUE }
+                Transform {
+                    translation 12 2 0
+                    children [
+
+                        
+#light switch
+                        Shape {
+                            appearance USE Chromy 
+                            geometry Cylinder {
+                                radius 1.5
+                                height 4
+                            }
+                        }
+                    ]
+                }
+                 
+
+#StateMachine Script
+                        #keeps track of sensors
+                        DEF SwitchBox Script {  
+                            eventIn SFTime touchTime
+                            field SFBool enabled TRUE
+                            eventOut SFBool onOff_changed
+                            eventOut SFBool setSwitchSensor
+                            eventOut SFBool setLightSensor 
+                            url "swichbox.js"
+                        }
+
+                  
+                ]
+
+        }
+    
+    ]      
+}
+
+
+#Time Sensor for poplight             
+    DEF SwitchTS TimeSensor {
+        cycleInterval .5
+        stopTime -1
+        loop FALSE
+        }
+
+    DEF LightTS TimeSensor {
+        cycleInterval .5
+        stopTime -1
+        loop FALSE
+    }
+
+#interpolators for popuplight
+    DEF PosInterpUP PositionInterpolator {
+        key      [0     ,  1.5]
+        keyValue [0 -4 0,  0 23 0 ]
+        }
+
+    DEF PosInterpDOWN PositionInterpolator {
+        key      [0      , 1.5]
+        keyValue [0 14 0, 0 -14 0]
+    }
+
+            ]
+        }
+
+
+         
+
+#storage hole
+
+        DEF Hole
+        Transform {
+            translation -200 20 -155
+            children [
+            
+             
+                DEF Storagehole 
+                Shape {
+                    appearance Appearance {
+                        material Material {
+                            diffuseColor 0 0 .01
+                            }
+                        }
+                    geometry Cylinder {
+                        bottom TRUE
+                        height 15
+                        radius 20
+                        }
+                }
+            ]
+        }
+
+
+#text next to slider.
+        DEF SliderScale
+        Transform {
+            translation 170 27 10
+            rotation -1 0 0 1.57
+            children [
+
+               
+                DEF SliderLabel
+                    Inline {
+                        url ["SlidLab.wrl"]
+                    }
+        ]
+        }
+
+
+#Slider&PlaneSensor
+        DEF SliderAndSensors
+        Transform {
+            translation 200 27 85       
+            rotation -1 0 0 1.57
+            children [
+                
+                DEF SpeedSlider
+                Transform {         
+                    children [
+                       
+                        DEF SliderSensor 
+                        PlaneSensor {
+                            minPosition 00 -65
+                            maxPosition 00 65
+                        }
+                        
+                        DEF Slider
+                        Inline {
+                            url ["SpeedSli.wrl"]
+                        }   
+                      
+                    ]
+                }  
+            ]    ROUTE SliderSensor.translation_changed TO SpeedSlider.set_translation
+        }
+ 
+     
+#this script simulates electricity
+#and processes sound and tonearm rotation
+            
+            DEF PowerBoxScript Script{
+                mustEvaluate TRUE
+                field SFNode myAudio USE myaudio
+                field SFNode SpeedSlider USE SpeedSlider
+                field SFFloat current 1
+                eventIn SFVec3f translation_changed
+
+                #is the arm up?
+                field SFBool isUp FALSE
+
+                #when lever is clicked
+                eventIn SFTime levertouchTime
+                
+                #tonearm vertical
+                field SFNode ToneArmVertical USE ToneArmVertical
+                
+                #tonearm horizontal
+                field SFNode ToneArm USE ToneArm 
+
+                #is the ttable turning?
+                field SFBool turning FALSE
+
+                #clicking the StartStop button
+                eventIn SFTime SStouchtime
+                
+                #static variables used to colour lights
+                field SFColor lightOff 0, 0, 0
+                field SFColor lightOn  1, 0, 0
+                
+                #clicking the PowerSwitch
+                eventIn SFTime touchTime
+
+                #sends arm up
+                eventOut SFTime uptouchTime
+                #sends arm down
+                eventOut SFTime downtouchTime
+
+                #disables horiz. arm movement
+                #if arm is down.
+                eventOut SFBool sethorizsensor
+
+                #alters pitch of record
+                eventOut SFFloat setPitch
+
+                #clicking either speedlight
+                eventIn SFTime stateChange
+
+                #is the powerOn?
+                field SFBool powerOn FALSE
+                field SFBool thirtythreeenabled FALSE
+			
+            	#toggles timer
+                eventOut SFBool rotTimerenabler
+
+                # enables/disables speedlight sensors
+                eventOut SFBool set33Sensor
+                eventOut SFBool set45Sensor 
+                
+                #enables/disables StartStop sensor
+                eventOut SFBool setSStopSensor
+
+                #turns speedlights on/off
+                eventOut SFColor set33colour
+                eventOut SFColor set45colour
+			
+                #turns red light output on/off
+                eventOut SFColor setRedpanel
+
+                #kills sound
+                eventOut SFTime audioToggle
+                
+                url "powerbox.js"
+            }        
+    ]
+
+    #########################  SLIDER ROUTING  ###########################
+    
+    ROUTE SliderSensor.translation_changed TO PowerBoxScript.translation_changed
+    
+    #######################  POWERBOX ROUTING  ###################### 
+ 
+    ###### POWERSWITCH AND SCRIPT ######                          
+    #      PowerSwitch to Script                                     
+    ROUTE Topsensor.touchTime TO PowerBoxScript.touchTime    
+                                                              
+    ###### POWERBOX AND STARTSTOPSENSOR ######                 
+    #powerbox to StartStop Sensor
+    ROUTE PowerBoxScript.setSStopSensor TO StartStopSensor.enabled
+    
+
+    ###### POWERBOX AND SPEEDBUTTONS
+    #speed button sensors to PowerBox
+    ROUTE TouSen33.touchTime TO PowerBoxScript.stateChange
+    ROUTE TouSen45.touchTime TO PowerBoxScript.stateChange
+    
+    #PowerBox to speedbutton sensors
+    ROUTE PowerBoxScript.set45Sensor TO TouSen45.enabled
+    ROUTE PowerBoxScript.set33Sensor TO TouSen33.enabled
+
+    #PowerBox to speedbutton lights
+    ROUTE PowerBoxScript.set33colour TO lite33.diffuseColor
+    ROUTE PowerBoxScript.set45colour TO lite45.diffuseColor
+    
+    #PowerBox to RedLight
+    ROUTE PowerBoxScript.setSStopSensor	TO RedLight.on        
+
+    ROUTE PowerBoxScript.setRedpanel TO redpanel.diffuseColor
+
+    ###### POWERBOX, STARTSTOP SWITCH AND TURNTABLE ######
+
+    #startstop switch to PowerBox
+    ROUTE StartStopSensor.touchTime TO PowerBoxScript.SStouchtime
+    
+    #PowerBox to Timer
+    ROUTE PowerBoxScript.rotTimerenabler TO TIMER.enabled
+    
+    #timesensor to orientation interp.
+    ROUTE TIMER.fraction_changed TO PlatterOrInt.set_fraction
+    
+
+    #Orientation interp. to transform field.
+    ROUTE PlatterOrInt.value_changed TO Plat&SlipMat.set_rotation
+
+    #dragging the platter
+    ROUTE PlatterSensor.rotation_changed TO Plat&SlipMat.rotation
+
+    
+         ### POPUP LIGHT ROUTING ###
+
+#switchsensor toggles switchbox state
+ROUTE SwitchSensor.touchTime TO SwitchBox.touchTime 
+
+#lightsensor toggles switchbox state
+ROUTE LightSensor.touchTime TO SwitchBox.touchTime  
+
+#when toggled switchbox toggles switchsensor
+ROUTE SwitchBox.setSwitchSensor TO SwitchSensor.enabled
+
+#and lightsensor
+ROUTE SwitchBox.setLightSensor TO LightSensor.enabled
+        
+#SwitchSensor drives TimeSensor -> posinterp. -> translationup
+ROUTE SwitchSensor.touchTime TO SwitchTS.startTime
+ROUTE SwitchTS.fraction_changed TO PosInterpUP.set_fraction 
+ROUTE PosInterpUP.value_changed TO PopLight.set_translation
+
+#LightSensor drives Timesensor -> posinterp -> translationdown.
+ROUTE LightSensor.touchTime TO LightTS.startTime
+ROUTE LightTS.fraction_changed TO PosInterpDOWN.set_fraction
+ROUTE PosInterpDOWN.value_changed TO PopLight.set_translation
+            
+}      
+
+ 
+### TONEARM ROUTING ####
+##  Routing  ##
+
+## route horiz. cylindersensor to tonearm 
+ROUTE ArmSensorHorizontal.rotation_changed TO ToneArm.set_rotation
+
+
+#route the leversensor to the script                
+ROUTE LeverSensor.touchTime TO PowerBoxScript.levertouchTime
+
+#route the script to the horiz. arm sensor.
+ROUTE PowerBoxScript.sethorizsensor TO ArmSensorHorizontal.enabled
+
+#route the script to the timesensors                   
+ROUTE PowerBoxScript.uptouchTime TO LeverTimeS.startTime
+ROUTE PowerBoxScript.downtouchTime TO DownLeverTS.startTime
+
+#route the timesensor to the Up interpolator.
+ROUTE LeverTimeS.fraction_changed TO ArmUpOrieInt.set_fraction
+ROUTE DownLeverTS.fraction_changed TO ArmDownOrieInt.set_fraction
+
+#route the up interpolator to the transform rotation
+ROUTE ArmUpOrieInt.value_changed TO ToneArmVertical.rotation
+ROUTE ArmDownOrieInt.value_changed TO ToneArmVertical.rotation
+
+#routing for the arm lever.
+ROUTE LeverTimeS.fraction_changed TO LeverDownOriInt.set_fraction
+ROUTE LeverDownOriInt.value_changed TO SensorT.rotation
+ROUTE DownLeverTS.fraction_changed TO LeverUpOriInt.set_fraction
+ROUTE LeverUpOriInt.value_changed TO SensorT.rotation
+
+
+#routing for the audio clip                                                 
+ROUTE PowerBoxScript.audioToggle TO myaudio.stopTime
+
+#script to soundclip pitch
+ROUTE PowerBoxScript.setPitch TO myaudio.pitch      
+
+
+    #PowerSwitch Rotation
+    ROUTE Topsensor.touchTime TO   topscript.touchTime
+    ROUTE topscript.clockOut TO timerboxclock.startTime
+    ROUTE topscript.anticlockOut TO timerboxanti.startTime 
+
+    ROUTE timerboxanti.fraction_changed TO anticlock.set_fraction
+    ROUTE timerboxclock.fraction_changed TO clockwise.set_fraction
+    ROUTE clockwise.value_changed TO Top.rotation
+    ROUTE anticlock.value_changed TO Top.rotation
+
+
+
+    ### Tooltip Routing 
+ 
+    #turns tooltips on/off   
+    ROUTE toolsensor.touchTime TO ToolTip.enabTime
+    #powerswitch to script    
+    ROUTE Topsensor.isOver TO ToolTip.powerisOver
+
+    #startStopSwitch to script
+    ROUTE StartStopSensor.isOver TO ToolTip.StartisOver 
+    
+    #poplite to script
+    ROUTE LightSensor.isOver TO ToolTip.popLiteisOver
+    
+    #popliteswitch to script
+    ROUTE SwitchSensor.isOver TO ToolTip.popswitchisOver
+
+    #tonearm to script
+    ROUTE armstipsens.isOver TO ToolTip.tonearmisOver
+
+    #headshell to script
+    ROUTE ArmSensorHorizontal.trackPoint_changed TO ToolTip.headshellisOver
+
+    #armlever to script
+    ROUTE LeverSensor.isOver TO ToolTip.leverisOver
+
+    #slider to script
+    ROUTE SliderSensor.translation_changed TO ToolTip.sliderisOver
+
+    #platter to scrip
+    ROUTE PlatterSensor.isActive TO ToolTip.platterisOver
+
+    #33 lightbutton
+    ROUTE TouSen33.isOver TO ToolTip.lite33isOver
+
+    #45 lightbutton
+    ROUTE TouSen45.isOver TO ToolTip.lite45isOver
+
+    #redlight
+    ROUTE redlitsens.isOver TO ToolTip.redLiteisOver
+
+    #script to switch
+    ROUTE ToolTip.display TO switch1.whichChoice
+
+    #toolsensor.isOver to script
+    ROUTE toolsensor.isOver TO ToolTip.toolisOver
+
+
+ ################################
+    ##########  UTILITIES ##########
+    ################################
+
+    ############ Outputs Avatar Position ###########
+
+DEF FINDME ProximitySensor {
+  center 0 0 0
+  size 1000 1000 1000
+}
+
+DEF Printer Script {
+  eventIn SFVec3f set_position
+  eventIn SFRotation set_orientation
+  url "javascript:
+  function set_position(value, time) {
+    print(value);
+  }
+  function set_orientation(value, time) {
+    print(value);
+  }"
+}
+
+ROUTE FINDME.position_changed TO Printer.set_position
+ROUTE FINDME.orientation_changed TO Printer.set_orientation
+     

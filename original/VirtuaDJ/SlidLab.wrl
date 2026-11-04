@@ -1,0 +1,26 @@
+#VRML V2.0 utf8
+ 
+#this is the specifications label (underside of deck body)
+#Author: Indra Sarkar (msc46ixs)
+
+
+Shape {
+    geometry Text {
+        fontStyle FontStyle {
+                size 6
+                style "BOLD"
+                spacing .7
+            }
+        string ["+ 8", "",
+                " - ", "", "  6", "",
+                " - ", "", "  4", "",
+                " - ", "", "  2", "",
+                " - ", "", " 0 ", "",
+                " - ", "", "  2", "",
+                " - ", "", "  4", "",
+                " - ", "", "  6", "",
+                " - ",  "",
+                "- 8"
+            ]   
+    }
+}

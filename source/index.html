@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A browser-based viewer for the original VirtuaDJ two-turntable VRML scene."
+    />
+    <title>VirtuaDJ — Original Turntables</title>
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="VirtuaDJ home">
+          <span class="brand-mark" aria-hidden="true">V</span>
+          <span>VIRTUA<span class="brand-accent">DJ</span></span>
+        </a>
+        <div class="topbar-note">ORIGINAL MODEL · 2000</div>
+      </header>
+
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">THE TWO-DECK SETUP</p>
+          <h1 id="page-title">Behind the wheels of steel.</h1>
+          <p class="intro-copy">
+            The original SL-1210 models, brought back to the browser.
+          </p>
+        </div>
+        <div class="deck-labels" aria-label="Two original decks">
+          <span><i aria-hidden="true"></i> DECK 01</span>
+          <span><i aria-hidden="true"></i> DECK 02</span>
+        </div>
+      </section>
+
+      <section class="viewer-shell" aria-label="Interactive 3D turntable viewer">
+        <x3d-canvas
+          src="/2Decks.wrl"
+          contentScale="auto"
+          update="auto"
+          aria-label="Two original VRML turntables. Drag to orbit, right-drag to pan, and scroll to zoom."
+        ></x3d-canvas>
+        <div class="viewer-caption">
+          <span>ORIGINAL VRML GEOMETRY</span>
+          <span class="viewer-hint">DRAG TO ORBIT&nbsp; · &nbsp;RIGHT-DRAG TO PAN&nbsp; · &nbsp;SCROLL TO ZOOM</span>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>Geometry and component hierarchy preserved from the original project.</span>
+        <span class="footer-status"><i aria-hidden="true"></i> MODEL VIEW</span>
+      </footer>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

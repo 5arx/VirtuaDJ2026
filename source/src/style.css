@@ -1,0 +1,253 @@
+:root {
+  font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+  color: #f3efe9;
+  background: #10100f;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+  font-weight: 400;
+
+  --muted: #898680;
+  --accent: #d78c43;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 50% 52%, rgb(84 70 53 / 15%), transparent 58%),
+    #10100f;
+}
+
+button,
+a {
+  color: inherit;
+}
+
+.app {
+  width: min(1440px, 100%);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0 56px;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  height: 82px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgb(255 255 255 / 9%);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.brand-mark {
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  color: var(--accent);
+  font-size: 12px;
+}
+
+.brand-accent {
+  color: var(--accent);
+}
+
+.topbar-note,
+.eyebrow,
+.deck-labels,
+.viewer-caption,
+.footer-status {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.topbar-note {
+  color: var(--muted);
+}
+
+.intro {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 48px 0 30px;
+}
+
+.eyebrow {
+  margin: 0 0 13px;
+  color: var(--accent);
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(29px, 4vw, 46px);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1.08;
+}
+
+.intro-copy {
+  margin: 12px 0 0;
+  color: #a7a29b;
+  font-size: 14px;
+}
+
+.deck-labels {
+  display: flex;
+  gap: 22px;
+  padding-bottom: 5px;
+  color: #b6b1a9;
+  white-space: nowrap;
+}
+
+.deck-labels span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.deck-labels i,
+.footer-status i {
+  width: 6px;
+  height: 6px;
+  display: inline-block;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.viewer-shell {
+  position: relative;
+  height: min(63vh, 690px);
+  min-height: 390px;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 5px;
+  background:
+    radial-gradient(ellipse at 50% 48%, rgb(119 104 83 / 17%), transparent 58%),
+    linear-gradient(145deg, #1d1c19, #121211 74%);
+  box-shadow: 0 26px 90px rgb(0 0 0 / 35%);
+}
+
+x3d-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: transparent;
+}
+
+.viewer-caption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  min-height: 42px;
+  padding: 0 17px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border-top: 1px solid rgb(255 255 255 / 10%);
+  background: rgb(14 14 13 / 84%);
+  color: #a9a49c;
+  pointer-events: none;
+}
+
+.viewer-hint {
+  color: #d5d0c8;
+  text-align: right;
+}
+
+.footer {
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.footer-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #c3beb7;
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .app {
+    padding: 0 20px;
+  }
+
+  .topbar {
+    height: 68px;
+  }
+
+  .intro {
+    align-items: start;
+    flex-direction: column;
+    padding: 35px 0 24px;
+  }
+
+  .deck-labels {
+    padding-bottom: 0;
+  }
+
+  .viewer-shell {
+    height: 58vh;
+    min-height: 340px;
+  }
+
+  .viewer-caption {
+    align-items: start;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    padding: 8px 12px;
+    font-size: 9px;
+  }
+
+  .viewer-hint {
+    text-align: left;
+  }
+
+  .footer {
+    align-items: start;
+    flex-direction: column;
+    justify-content: center;
+    padding: 12px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}

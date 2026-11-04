@@ -1,0 +1,37 @@
+#VRML V2.0 utf8
+
+#this is the headshell screw
+#author: Indra Sarkar (msc46ixs)
+
+DEF Wholescrew Group {
+  
+  children [       
+
+        DEF screwtop 
+        Shape {
+            appearance Appearance {
+                material Material {
+                    diffuseColor 0.8 0.8 0.8
+                    shininess .8
+                    specularColor .95 .95 1
+                    }
+                }
+            geometry Cylinder { radius 1.9 height 0.4 }
+        }
+
+        DEF Screwshaft 
+        Transform {
+            translation 0 -2.5 0
+            children 
+            DEF screwshaft
+                Shape {
+                    appearance Appearance {
+                        material Material {
+                            diffuseColor .6 .6 .6  # 0.02353 0.5255 0.2275
+                        }
+                    }
+                    geometry Cylinder { radius 0.7 height 4.5 }
+                }
+        }
+    ]
+}    

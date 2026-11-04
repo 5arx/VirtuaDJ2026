@@ -1,0 +1,20 @@
+#VRML V2.0 utf8
+
+#text for the 45 speedbutton.
+#author: Indra Sarkar(msc46ixs)
+
+Shape {
+    appearance Appearance {
+        material Material {
+            diffuseColor 0 0 0
+        }
+    }
+    geometry Text {
+        fontStyle FontStyle {
+            style "BOLD"
+            size 5
+
+        }
+        string ["45"]
+    }
+}
