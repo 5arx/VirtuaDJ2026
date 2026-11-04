@@ -15,6 +15,9 @@ rate across the SL-1210-style range from -8% to +8%. The original 33⅓ and 45
 RPM buttons select the deck's base playback rate independently of that pitch
 adjustment.
 
+Switching off a powered, playing deck now produces a progressive turntable
+spin-down instead of stopping its audio instantly.
+
 ## Run locally
 
 ```sh

@@ -6,6 +6,8 @@ export class DeckAudioPlayer {
   private startedAt = 0;
   private shouldPlay = false;
   private playbackRate = 1;
+  private activePlaybackRate = 1;
+  private spinDownFrame?: number;
 
   constructor(
     private readonly context: AudioContext,
@@ -16,6 +18,8 @@ export class DeckAudioPlayer {
     this.shouldPlay = true;
 
     if (this.source) {
+      this.cancelSpinDown();
+      this.applyActivePlaybackRate(this.playbackRate);
       return;
     }
 
@@ -36,10 +40,12 @@ export class DeckAudioPlayer {
 
     this.source = source;
     this.startedAt = this.context.currentTime;
+    this.activePlaybackRate = this.playbackRate;
   }
 
   pause(): void {
     this.shouldPlay = false;
+    this.cancelSpinDown();
 
     if (!this.source || !this.buffer) {
       return;
@@ -49,6 +55,7 @@ export class DeckAudioPlayer {
     this.source.stop();
     this.source.disconnect();
     this.source = undefined;
+    this.activePlaybackRate = this.playbackRate;
   }
 
   setPlaybackRate(rate: number): void {
@@ -56,12 +63,45 @@ export class DeckAudioPlayer {
       throw new Error(`Invalid playback rate: ${rate}`);
     }
 
+    this.cancelSpinDown();
+    this.playbackRate = rate;
+    this.applyActivePlaybackRate(rate);
+  }
+
+  spinDown(durationSeconds = 4.5): void {
+    if (!this.source || durationSeconds <= 0) {
+      this.pause();
+      return;
+    }
+
+    this.cancelSpinDown();
+    const initialRate = this.activePlaybackRate;
+    const startedAt = performance.now();
+
+    const update = (now: number): void => {
+      const progress = Math.min((now - startedAt) / (durationSeconds * 1000), 1);
+      const rate = Math.max(initialRate * (1 - progress ** 1.4), 0.01);
+
+      this.applyActivePlaybackRate(rate);
+
+      if (progress < 1) {
+        this.spinDownFrame = requestAnimationFrame(update);
+      } else {
+        this.spinDownFrame = undefined;
+        this.pause();
+      }
+    };
+
+    this.spinDownFrame = requestAnimationFrame(update);
+  }
+
+  private applyActivePlaybackRate(rate: number): void {
     if (this.source && this.buffer) {
       this.updateOffset();
       this.source.playbackRate.setValueAtTime(rate, this.context.currentTime);
     }
 
-    this.playbackRate = rate;
+    this.activePlaybackRate = rate;
   }
 
   private updateOffset(): void {
@@ -70,9 +110,16 @@ export class DeckAudioPlayer {
     }
 
     const elapsedTrackTime =
-      (this.context.currentTime - this.startedAt) * this.playbackRate;
+      (this.context.currentTime - this.startedAt) * this.activePlaybackRate;
     this.offset = (this.offset + elapsedTrackTime) % this.buffer.duration;
     this.startedAt = this.context.currentTime;
+  }
+
+  private cancelSpinDown(): void {
+    if (this.spinDownFrame !== undefined) {
+      cancelAnimationFrame(this.spinDownFrame);
+      this.spinDownFrame = undefined;
+    }
   }
 
   private load(): Promise<AudioBuffer> {

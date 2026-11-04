@@ -41,6 +41,7 @@ function connectDeck(
   const speedSlider = deckScene.getNamedNode("SpeedSlider");
   const player = new DeckAudioPlayer(audioContext, trackUrl);
   let turning = false;
+  let powerOn = false;
   let needleEngaged = false;
   let basePlaybackRate = 1;
   let pitchMultiplier = 1;
@@ -64,12 +65,14 @@ function connectDeck(
           setAudioStatus(`${deckLabel} AUDIO ERROR`);
         });
     } else {
-      player.pause();
+      if (powerOn) {
+        player.pause();
+      }
 
       // A stop button event sets turning false before audioToggle. Preserve the
       // engaged needle so start can resume; an audio stop while still turning
       // means the arm was lifted and must disarm playback.
-      if (turning) {
+      if (powerOn && turning) {
         needleEngaged = false;
       }
 
@@ -81,8 +84,10 @@ function connectDeck(
     turning = Boolean(value);
 
     if (!turning) {
-      player.pause();
-      setAudioStatus(`${deckLabel} PLATTER STOPPED`);
+      if (powerOn) {
+        player.pause();
+        setAudioStatus(`${deckLabel} PLATTER STOPPED`);
+      }
     } else if (needleEngaged) {
       setAudioStatus(`${deckLabel} RESUME SIGNAL`);
       void player
@@ -92,6 +97,15 @@ function connectDeck(
           console.error(error);
           setAudioStatus(`${deckLabel} AUDIO ERROR`);
         });
+    }
+  });
+
+  stateMachine.addFieldCallback(`${deckLabel}-power`, "powerOn", (value) => {
+    powerOn = Boolean(value);
+
+    if (!powerOn && turning && needleEngaged) {
+      player.spinDown();
+      setAudioStatus(`${deckLabel} POWER SPIN-DOWN`);
     }
   });
 
