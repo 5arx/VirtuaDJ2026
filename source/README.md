@@ -5,6 +5,11 @@ It loads `2Decks.wrl` directly with X_ITE so the original scene hierarchy,
 component transforms, materials, and textures are not converted or rewritten.
 The source model files remain in `../original/VirtuaDJ`.
 
+Audio uses the original `dnbsamp.wav` and `dnbbeats.wav` recordings. Web Audio
+follows the original VRML `PowerBoxScript` state events, so each track plays only
+when its deck is powered, its platter is turning, and its tonearm is lowered over
+the record. The original files remain unchanged.
+
 ## Run locally
 
 ```sh
