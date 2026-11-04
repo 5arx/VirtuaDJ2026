@@ -65,7 +65,7 @@ function connectDeck(
           setAudioStatus(`${deckLabel} AUDIO ERROR`);
         });
     } else {
-      if (powerOn) {
+      if (powerOn && turning) {
         player.pause();
       }
 
@@ -85,13 +85,13 @@ function connectDeck(
 
     if (!turning) {
       if (powerOn) {
-        player.pause();
-        setAudioStatus(`${deckLabel} PLATTER STOPPED`);
+        player.spinDown(0.7);
+        setAudioStatus(`${deckLabel} STOP DRAG`);
       }
     } else if (needleEngaged) {
-      setAudioStatus(`${deckLabel} RESUME SIGNAL`);
+      setAudioStatus(`${deckLabel} START DRAG`);
       void player
-        .play()
+        .spinUp()
         .then(() => setAudioStatus(`${deckLabel} AUDIO PLAYING`))
         .catch((error: unknown) => {
           console.error(error);

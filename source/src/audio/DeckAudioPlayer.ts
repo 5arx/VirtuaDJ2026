@@ -95,6 +95,37 @@ export class DeckAudioPlayer {
     this.spinDownFrame = requestAnimationFrame(update);
   }
 
+  async spinUp(durationSeconds = 0.7): Promise<void> {
+    await this.play();
+
+    if (!this.source || durationSeconds <= 0) {
+      return;
+    }
+
+    this.cancelSpinDown();
+    const targetRate = this.playbackRate;
+    const initialRate = Math.min(targetRate, 0.2);
+    const startedAt = performance.now();
+
+    this.applyActivePlaybackRate(initialRate);
+
+    const update = (now: number): void => {
+      const progress = Math.min((now - startedAt) / (durationSeconds * 1000), 1);
+      const easedProgress = 1 - (1 - progress) ** 2.2;
+      const rate = initialRate + (targetRate - initialRate) * easedProgress;
+
+      this.applyActivePlaybackRate(rate);
+
+      if (progress < 1) {
+        this.spinDownFrame = requestAnimationFrame(update);
+      } else {
+        this.spinDownFrame = undefined;
+      }
+    };
+
+    this.spinDownFrame = requestAnimationFrame(update);
+  }
+
   private applyActivePlaybackRate(rate: number): void {
     if (this.source && this.buffer) {
       this.updateOffset();

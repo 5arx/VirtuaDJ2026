@@ -18,6 +18,9 @@ adjustment.
 Switching off a powered, playing deck now produces a progressive turntable
 spin-down instead of stopping its audio instantly.
 
+The start/stop control applies a short, high-torque direct-drive acceleration
+and deceleration curve while leaving tonearm lift pauses immediate.
+
 ## Run locally
 
 ```sh
