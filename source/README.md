@@ -10,6 +10,11 @@ follows the original VRML `PowerBoxScript` state events, so each track plays onl
 when its deck is powered, its platter is turning, and its tonearm is lowered over
 the record. The original files remain unchanged.
 
+Each deck's original pitch slider continuously controls its Web Audio playback
+rate across the SL-1210-style range from -8% to +8%. The original 33⅓ and 45
+RPM buttons select the deck's base playback rate independently of that pitch
+adjustment.
+
 ## Run locally
 
 ```sh

@@ -5,6 +5,7 @@ export class DeckAudioPlayer {
   private offset = 0;
   private startedAt = 0;
   private shouldPlay = false;
+  private playbackRate = 1;
 
   constructor(
     private readonly context: AudioContext,
@@ -29,6 +30,7 @@ export class DeckAudioPlayer {
     const source = this.context.createBufferSource();
     source.buffer = buffer;
     source.loop = true;
+    source.playbackRate.value = this.playbackRate;
     source.connect(this.context.destination);
     source.start(0, this.offset);
 
@@ -43,11 +45,34 @@ export class DeckAudioPlayer {
       return;
     }
 
-    this.offset =
-      (this.offset + this.context.currentTime - this.startedAt) % this.buffer.duration;
+    this.updateOffset();
     this.source.stop();
     this.source.disconnect();
     this.source = undefined;
+  }
+
+  setPlaybackRate(rate: number): void {
+    if (!Number.isFinite(rate) || rate <= 0) {
+      throw new Error(`Invalid playback rate: ${rate}`);
+    }
+
+    if (this.source && this.buffer) {
+      this.updateOffset();
+      this.source.playbackRate.setValueAtTime(rate, this.context.currentTime);
+    }
+
+    this.playbackRate = rate;
+  }
+
+  private updateOffset(): void {
+    if (!this.source || !this.buffer) {
+      return;
+    }
+
+    const elapsedTrackTime =
+      (this.context.currentTime - this.startedAt) * this.playbackRate;
+    this.offset = (this.offset + elapsedTrackTime) % this.buffer.duration;
+    this.startedAt = this.context.currentTime;
   }
 
   private load(): Promise<AudioBuffer> {

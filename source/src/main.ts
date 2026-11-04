@@ -10,6 +10,10 @@ if (!viewer) {
 
 const audioContext = new AudioContext();
 const audioStatus = document.querySelector<HTMLElement>("#audio-system-status");
+const SLIDER_TRAVEL = 65;
+const MAX_PITCH_PERCENT = 8;
+const RPM_33 = 33 + 1 / 3;
+const RPM_45 = 45;
 
 function setAudioStatus(message: string): void {
   if (audioStatus) {
@@ -34,9 +38,16 @@ function connectDeck(
 ): void {
   const stateMachine = deckScene.getNamedNode("PowerBoxScript");
   const legacySound = deckScene.getNamedNode("mySound");
+  const speedSlider = deckScene.getNamedNode("SpeedSlider");
   const player = new DeckAudioPlayer(audioContext, trackUrl);
   let turning = false;
   let needleEngaged = false;
+  let basePlaybackRate = 1;
+  let pitchMultiplier = 1;
+
+  const applyPlaybackRate = (): void => {
+    player.setPlaybackRate(basePlaybackRate * pitchMultiplier);
+  };
 
   // Prevent X_ITE's legacy AudioClip from doubling the Web Audio output.
   (legacySound as unknown as { intensity: number }).intensity = 0;
@@ -82,6 +93,29 @@ function connectDeck(
           setAudioStatus(`${deckLabel} AUDIO ERROR`);
         });
     }
+  });
+
+  speedSlider.addFieldCallback(`${deckLabel}-pitch`, "translation", (value) => {
+    const translation = value as ArrayLike<number>;
+    const sliderPosition = Math.max(
+      -SLIDER_TRAVEL,
+      Math.min(SLIDER_TRAVEL, Number(translation[1])),
+    );
+    const pitchPercent = (sliderPosition / SLIDER_TRAVEL) * MAX_PITCH_PERCENT;
+
+    pitchMultiplier = 1 + pitchPercent / 100;
+    applyPlaybackRate();
+    setAudioStatus(
+      `${deckLabel} PITCH ${pitchPercent >= 0 ? "+" : ""}${pitchPercent.toFixed(1)}%`,
+    );
+  });
+
+  stateMachine.addFieldCallback(`${deckLabel}-rpm`, "current", (value) => {
+    basePlaybackRate = Number(value);
+    applyPlaybackRate();
+
+    const rpm = basePlaybackRate > 1.1 ? RPM_45 : RPM_33;
+    setAudioStatus(`${deckLabel} ${rpm === RPM_45 ? "45" : "33⅓"} RPM`);
   });
 }
 
