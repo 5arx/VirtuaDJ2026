@@ -15,11 +15,25 @@ rate across the SL-1210-style range from -8% to +8%. The original 33⅓ and 45
 RPM buttons select the deck's base playback rate independently of that pitch
 adjustment.
 
+Switching between 33⅓ and 45 RPM uses a short mechanical-style speed transition
+instead of changing the audio rate instantaneously.
+
 Switching off a powered, playing deck now produces a progressive turntable
 spin-down instead of stopping its audio instantly.
 
 The start/stop control applies a short, high-torque direct-drive acceleration
 and deceleration curve while leaving tonearm lift pauses immediate.
+
+Platter timing is explicitly reset after a power cycle so visual rotation and
+audio playback return to the same state when the deck is restarted.
+
+Each deck also has a Quick Play convenience control. It powers and starts the
+deck when needed, then lifts the tonearm, cues it over the record, and lowers it
+through the original lever state machine.
+
+Manual arm operation also derives needle engagement from the arm's actual
+lowered position, avoiding a legacy endpoint condition that could suppress the
+first playback attempt.
 
 ## Run locally
 
