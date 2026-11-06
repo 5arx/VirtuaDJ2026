@@ -28,12 +28,14 @@ const servedScenes = new Map([
 ]);
 
 function correctSceneReferences(
+  filename: string,
   scene: string,
   corrections: Map<string, string>,
 ): string {
   for (const [incorrect, corrected] of corrections) {
     scene = scene.replaceAll(incorrect, corrected);
   }
+
   return scene;
 }
 
@@ -65,7 +67,7 @@ function serveOriginalAsset(
       );
       response.end(
         corrections
-          ? correctSceneReferences(contents.toString("utf8"), corrections)
+          ? correctSceneReferences(filename, contents.toString("utf8"), corrections)
           : contents,
       );
     })
@@ -130,7 +132,7 @@ function originalSceneAliases(): Plugin {
         const scene = await readFile(scenePath, "utf8");
         await writeFile(
           scenePath,
-          correctSceneReferences(scene, corrections),
+          correctSceneReferences(filename, scene, corrections),
           "utf8",
         );
       }

@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "VirtualDJ: Debug in Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://127.0.0.1:5173/",
+      "webRoot": "${workspaceFolder}/source",
+      "preLaunchTask": "VirtualDJ: Dev Server",
+      "sourceMaps": true
+    },
+    {
+      "name": "VirtualDJ: Preview Production Build",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://127.0.0.1:4173/",
+      "webRoot": "${workspaceFolder}/source",
+      "preLaunchTask": "VirtualDJ: Production Preview",
+      "sourceMaps": true
+    }
+  ]
+}

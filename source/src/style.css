@@ -152,6 +152,46 @@ h1 {
   box-shadow: 0 26px 90px rgb(0 0 0 / 35%);
 }
 
+.quick-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.quick-play {
+  height: 38px;
+  border: 1px solid rgb(215 140 67 / 55%);
+  border-radius: 4px;
+  background: rgb(215 140 67 / 7%);
+  color: #d5d0c8;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.quick-play span {
+  margin-right: 7px;
+  color: var(--accent);
+}
+
+.quick-play:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: rgb(215 140 67 / 14%);
+}
+
+.quick-play:focus-visible {
+  outline: 2px solid #f3efe9;
+  outline-offset: 2px;
+}
+
+.quick-play:disabled {
+  cursor: wait;
+  opacity: 0.5;
+}
+
 x3d-canvas {
   width: 100%;
   height: 100%;
@@ -221,6 +261,10 @@ x3d-canvas {
   .viewer-shell {
     height: 58vh;
     min-height: 340px;
+  }
+
+  .quick-controls {
+    grid-template-columns: 1fr;
   }
 
   .viewer-caption {
